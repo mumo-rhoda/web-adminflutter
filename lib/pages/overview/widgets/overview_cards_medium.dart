@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_dashboard/models/emegercies.dart';
+import 'package:flutter_web_dashboard/models/users.dart';
 import 'package:flutter_web_dashboard/pages/overview/widgets/info_card.dart';
 
 
 class OverviewCardsMediumScreen extends StatelessWidget {
+  List<Emergencies> emergencies;
+  List<Users> users;
+  OverviewCardsMediumScreen({this.emergencies, this.users});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,7 @@ class OverviewCardsMediumScreen extends StatelessWidget {
                   children: [
                     InfoCard(
                       title: "AppUsers",
-                      value: "7",
+                      value: users.length.toString(),
                       onTap: () {},
                   topColor: Colors.orange,
 
@@ -25,7 +30,7 @@ class OverviewCardsMediumScreen extends StatelessWidget {
                     ),
                     InfoCard(
                       title: "Emergency Reports",
-                      value: "17",
+                      value: emergencies.length.toString(),
                   topColor: Colors.lightGreen,
 
                       onTap: () {},
@@ -41,7 +46,7 @@ class OverviewCardsMediumScreen extends StatelessWidget {
              
                     InfoCard(
                       title: "Closed Emergencies",
-                      value: "3",
+                      value: emergencies.where((element) => element.ReportStatus == "Closed").toList().length.toString(),
                   topColor: Colors.redAccent,
 
                       onTap: () {},
@@ -51,7 +56,8 @@ class OverviewCardsMediumScreen extends StatelessWidget {
                     ),
                     InfoCard(
                       title: "Pending Emergencies",
-                      value: "32",
+                      value:  emergencies.where((element) => element.ReportStatus == "Pending").toList().length.toString(),
+
                       onTap: () {},
                     ),
                 
