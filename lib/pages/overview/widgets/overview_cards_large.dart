@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_dashboard/models/emegercies.dart';
+import 'package:flutter_web_dashboard/models/users.dart';
 import 'package:flutter_web_dashboard/pages/overview/widgets/info_card.dart';
 
 
 class OverviewCardsLargeScreen extends StatelessWidget {
+  List<Emergencies> emergencies;
+  List<Users> users;
+  OverviewCardsLargeScreen({this.emergencies, this.users});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +17,7 @@ class OverviewCardsLargeScreen extends StatelessWidget {
               children: [
                 InfoCard(
                   title: "App Users",
-                  value: "7",
+                  value: users.length.toString(),
                   onTap: () {},
                   topColor: Colors.orange,
                 ),
@@ -21,7 +26,7 @@ class OverviewCardsLargeScreen extends StatelessWidget {
                 ),
                 InfoCard(
                   title: "Emergency_Reports",
-                  value: "17",
+                  value: emergencies.length.toString(),
                   topColor: Colors.lightGreen,
                   onTap: () {},
                 ),
@@ -30,8 +35,8 @@ class OverviewCardsLargeScreen extends StatelessWidget {
                 ),
                 InfoCard(
                   title: "ClosedEmergencyCase",
-                  value: "3",
-                  topColor: Colors.redAccent,
+                  value: emergencies.where((element) => element.ReportStatus == "Closed").toList().length.toString(),
+
                   onTap: () {},
                 ),
                 SizedBox(
@@ -39,8 +44,8 @@ class OverviewCardsLargeScreen extends StatelessWidget {
                 ),
                 InfoCard(
                   title: "PendingCases",
-                  value: "32",
-                  onTap: () {},
+                  value: emergencies.where((element) => element.ReportStatus == "Pending").toList().length.toString(),
+                    onTap: () {},
                 ),
               ],
             );

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_dashboard/models/emegercies.dart';
+import 'package:flutter_web_dashboard/models/users.dart';
 import 'info_card_small.dart';
 
 
 class OverviewCardsSmallScreen extends StatelessWidget {
+  List<Emergencies> emergencies;
+  List<Users> users;
+  OverviewCardsSmallScreen({this.emergencies, this.users});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +19,7 @@ class OverviewCardsSmallScreen extends StatelessWidget {
         children: [
           InfoCardSmall(
                         title: "AppUsers",
-                        value: "7",
+                        value: users.length.toString(),
                         onTap: () {},
                         isActive: true,
                       ),
@@ -23,7 +28,7 @@ class OverviewCardsSmallScreen extends StatelessWidget {
                       ),
                       InfoCardSmall(
                         title: "EmergencyReports",
-                        value: "17",
+                        value: emergencies.length.toString(),
                         onTap: () {},
                       ),
                      SizedBox(
@@ -31,15 +36,16 @@ class OverviewCardsSmallScreen extends StatelessWidget {
                       ),
                           InfoCardSmall(
                         title: "Closed Emergencies",
-                        value: "3",
-                        onTap: () {},
+                        value: emergencies.where((element) => element.ReportStatus == "Closed").toList().length.toString(),
+                           onTap: () {},
                       ),
                       SizedBox(
                         height: _width / 64,
                       ),
                       InfoCardSmall(
                         title: "PendingEmergencies",
-                        value: "32",
+                        value: emergencies.where((element) => element.ReportStatus == "Pending").toList().length.toString(),
+
                         onTap: () {},
                       ),
                   
