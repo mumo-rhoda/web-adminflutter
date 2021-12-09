@@ -26,9 +26,11 @@ class MenuController extends GetxController {
       case overviewPageDisplayName:
         return _customIcon(Icons.trending_up, itemName);
       case usersPageDisplayName:
-        return _customIcon(Icons.drive_eta, itemName);
-      case emergenciesPageDisplayName:
         return _customIcon(Icons.people_alt_outlined, itemName);
+      case emergenciesPageDisplayName:
+        return _customIcon(Icons.drive_eta, itemName);
+      case dispatchTeamPageDisplayName:
+        return _customIcon(Icons.taxi_alert_outlined, itemName);
       case authenticationPageDisplayName:
         return _customIcon(Icons.exit_to_app, itemName);
       default:

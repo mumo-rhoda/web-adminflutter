@@ -1,3 +1,5 @@
+ // ignore_for_file: must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_dashboard/constants/controllers.dart';
@@ -10,7 +12,7 @@ import 'package:flutter_web_dashboard/widgets/custom_text.dart';
 import 'package:get/get.dart';
 
 class EmergenciesPage extends StatelessWidget {
-   EmergenciesPage({Key key}) : super(key: key);
+  EmergenciesPage({Key key}) : super(key: key);
 
   List<Emergencies> uRequestsList = [];
   List<Users> usersList = [];
@@ -36,45 +38,47 @@ class EmergenciesPage extends StatelessWidget {
           ),
           Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                      stream: FirestoreDB().mUserstream,
-                      builder: ( BuildContext context,  AsyncSnapshot<QuerySnapshot> snapshot) {
-                        usersList.clear();
-                        if (snapshot.data != null && snapshot.hasData) {
-                          if (snapshot.data.docs.isNotEmpty) {
-                            snapshot.data.docs.forEach((element) {
-                              Users user = Users.fromMapObject(element.data());
+                  stream: FirestoreDB().mUserstream,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    usersList.clear();
+                    if (snapshot.data != null && snapshot.hasData) {
+                      if (snapshot.data.docs.isNotEmpty) {
+                        snapshot.data.docs.forEach((element) {
+                          Users user = Users.fromMapObject(element.data());
 
-                              usersList.add(user);
-                            });
-                          }
+                          usersList.add(user);
+                        });
+                      }
 
-                          return StreamBuilder<QuerySnapshot>(
-                              stream: FirestoreDB().mEmergenciesStream,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                uRequestsList.clear();
-                                if (snapshot.data != null && snapshot.hasData) {
-                                  if (snapshot.data.docs.isNotEmpty) {
-                                    snapshot.data.docs.forEach((element) {
-                                      Emergencies emergency = Emergencies
-                                          .fromMapObject(element.data());
+                      return StreamBuilder<QuerySnapshot>(
+                          stream: FirestoreDB().mEmergenciesStream,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            uRequestsList.clear();
+                            if (snapshot.data != null && snapshot.hasData) {
+                              if (snapshot.data.docs.isNotEmpty) {
+                                snapshot.data.docs.forEach((element) {
+                                  Emergencies emergency =
+                                      Emergencies.fromMapObject(element.data());
 
-                                      uRequestsList.add(emergency);
-                                    });
-                                  }
-                                  return ListView(
-                                    children: [
-                                      Emergenciestable(
-                                        emergencies: uRequestsList,
-                                        users: usersList,),
-                                    ],
-                                  );
-                                } else
-                                  return Container();
-                              });
-                        } else
-                          return Container();
-                      })),
+                                  uRequestsList.add(emergency);
+                                });
+                              }
+                              return ListView(
+                                children: [
+                                  Emergenciestable(
+                                    emergencies: uRequestsList,
+                                    users: usersList,
+                                  ),
+                                ],
+                              );
+                            } else
+                              return Container();
+                          });
+                    } else
+                      return Container();
+                  })),
         ],
       ),
     );
