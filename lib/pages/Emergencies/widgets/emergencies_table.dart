@@ -95,8 +95,8 @@ class Emergenciestable extends StatelessWidget {
                     IconButton(
                       onPressed: () async {
                         //set emergency's status to closed
-                        emergency.ReportStatus = "Closed";
-                        await FirestoreDB().updateEmergency(emergency);
+                        //emergency.ReportStatus = "Closed";
+                        //await FirestoreDB().updateEmergency(emergency);
 
                           Navigator.push(
                               context,

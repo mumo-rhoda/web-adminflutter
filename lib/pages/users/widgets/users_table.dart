@@ -65,20 +65,20 @@ class UsersTable extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      onPressed: () async {},
+                    onPressed: ()  {
+                       Navigator.push(
+                                 context,
+                        MaterialPageRoute(
+                                  builder: (context) => UpdateUsersPage(),
+                          )
+                             );
+                      },
                       hoverColor: Colors.grey,
                       icon: Icon(Icons.edit),
                       color: Colors.blue,
                     ),
                     IconButton(
-                      onPressed: ()  {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UpdateUsersPage(),
-                            )
-                        );
-                      },
+                      onPressed: ()async {},
                       hoverColor: Colors.grey,
                       icon: Icon(Icons.delete),
                       color: Colors.red,
