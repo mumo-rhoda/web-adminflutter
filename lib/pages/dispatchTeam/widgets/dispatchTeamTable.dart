@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_dashboard/constants/style.dart';
 import 'package:flutter_web_dashboard/models/dispatch.dart';
+import 'package:flutter_web_dashboard/pages/dispatchTeam/widgets/updateDispatchTeam.dart';
 import 'package:flutter_web_dashboard/widgets/custom_text.dart';
+
+import 'addDispatchTeam.dart';
 
 class DispatchTable extends StatelessWidget{
   List<Dispatch> dispatch;
@@ -46,6 +49,9 @@ class DispatchTable extends StatelessWidget{
                 label: Text('Contacts'),
               ),
               DataColumn(
+                label: Text('Status'),
+              ),
+              DataColumn(
                 label: Text('Actions'),
               ),
             ],
@@ -55,11 +61,19 @@ class DispatchTable extends StatelessWidget{
                 DataCell(CustomText(text: dispatch.Type)),
                 DataCell(CustomText(text: dispatch.Location)),
                 DataCell(CustomText(text: dispatch.Contact)),
+                DataCell(CustomText(text: dispatch.status)),
               DataCell(Row(
                    mainAxisSize: MainAxisSize.min,
                     children: [
                        IconButton(
-                             onPressed: () async {},
+                             onPressed: ()  {
+                               Navigator.push(
+                                 context,
+                                 MaterialPageRoute(
+                                   builder: (context) => UpdateDispatchTeamPage(),
+                                 )
+                               );
+                             },
                               hoverColor: Colors.grey,
                             icon: Icon(Icons.edit),
                                color: Colors.blue,
@@ -71,9 +85,16 @@ class DispatchTable extends StatelessWidget{
                              color: Colors.red,
                          ),
                    IconButton(
-                      onPressed: () async {},
-                      hoverColor: Colors.grey,
-                           icon: Icon(Icons.check_circle),
+                      onPressed: ()  {
+                             Navigator.push(
+                                     context,
+                                      MaterialPageRoute(
+                        builder: (context) => AddDispatchTeamPage(),
+                                      )
+                             );
+                             },
+                            hoverColor: Colors.grey,
+                           icon: Icon(Icons.add_task),
                             color: Colors.green,
                     ),
             ],

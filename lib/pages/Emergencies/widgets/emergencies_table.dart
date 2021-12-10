@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_web_dashboard/constants/style.dart';
 import 'package:flutter_web_dashboard/models/emegercies.dart';
 import 'package:flutter_web_dashboard/models/users.dart';
+import 'package:flutter_web_dashboard/pages/Emergencies/widgets/updateEmergencies.dart';
 import 'package:flutter_web_dashboard/pages/overview/widgets/mapsWidget.dart';
 import 'package:flutter_web_dashboard/services/FirestoreDB.dart';
 import 'package:flutter_web_dashboard/widgets/custom_text.dart';
@@ -96,8 +97,16 @@ class Emergenciestable extends StatelessWidget {
                         //set emergency's status to closed
                         emergency.ReportStatus = "Closed";
                         await FirestoreDB().updateEmergency(emergency);
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateEmergencies(),
+                              )
+                          );
+                        },
                         //callAlertDialog();
-                      },
+
                       hoverColor: Colors.grey,
                       icon: Icon(Icons.check_circle),
                       color: Colors.green,

@@ -6,7 +6,7 @@ class Dispatch {
   String Location;
   String Type;
   String Contact;
-  String uid;
+  String status;
 
 
   Dispatch({
@@ -14,6 +14,7 @@ class Dispatch {
     this.Location,
     this.Type,
     this.Contact,
+    this.status,
 
   });
   
@@ -21,6 +22,7 @@ class Dispatch {
   String get _Location => Location;
   String get _Type => Type;
   String get _Contact => Contact;
+  String get _status => status;
   
   set _Name(String newName){
     this.Name = newName;
@@ -35,7 +37,9 @@ class Dispatch {
   set _Contact(String newContact) {
     this.Contact = newContact;
   }
-
+set _status(String newstatus) {
+    this.status = newstatus;
+}
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
 
@@ -43,6 +47,7 @@ class Dispatch {
     map['Location'] = Location;
     map['Contact'] = Contact;
     map['Type'] = Type;
+    map['status']= status;
     return map;
   }
  Dispatch.fromMapObject(Map<dynamic, dynamic> map) {
@@ -50,6 +55,7 @@ class Dispatch {
     this.Location = map['Location'] ?? '';
     this.Type = map['Type'] ?? '';
     this.Contact = map['Contact'] ?? '';
+    this.status = map['status'] ?? '';
 
  }
 }

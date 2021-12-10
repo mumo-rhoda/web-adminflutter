@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_web_dashboard/constants/style.dart';
 import 'package:flutter_web_dashboard/models/users.dart';
+import 'package:flutter_web_dashboard/pages/users/widgets/updateUsers.dart';
 import 'package:flutter_web_dashboard/services/FirestoreDB.dart';
 import 'package:flutter_web_dashboard/widgets/custom_text.dart';
+
+import 'addUsers.dart';
 
 /// Example without datasource
 class UsersTable extends StatelessWidget {
@@ -68,15 +71,30 @@ class UsersTable extends StatelessWidget {
                       color: Colors.blue,
                     ),
                     IconButton(
-                      onPressed: () async {},
+                      onPressed: ()  {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UpdateUsersPage(),
+                            )
+                        );
+                      },
                       hoverColor: Colors.grey,
                       icon: Icon(Icons.delete),
                       color: Colors.red,
                     ),
                     IconButton(
-                      onPressed: () async {},
+                      onPressed: () =>
+                      {
+                         Navigator.push(
+                         context,
+                          MaterialPageRoute(
+                             builder: (context) => AddUsers(),
+                            ),
+                            )
+                      },
                       hoverColor: Colors.grey,
-                      icon: Icon(Icons.check_circle),
+                      icon: Icon(Icons.add_task),
                       color: Colors.green,
                     ),
                   ],
