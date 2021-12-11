@@ -107,8 +107,8 @@ class Emergencies{
     this.ReportStatus = map['ReportStatus'] ?? '';
     this.ReportType = map['EmergencyType'] ?? '';
     this.ReportParty = map['ReportParty'] ?? '';
-    this.Description = map['description'] ?? '';
-    map['timestamp'] != null? this.dateTime =  map['timestamp'].toDate(): this.dateTime = DateTime.now();
+    this.Description = map['description'] ?? '';print(map['timestamp']);
+    map['timestamp'] != null? this.dateTime =  DateTime.fromMicrosecondsSinceEpoch(map['timestamp']): this.dateTime = DateTime.now();
 
 
     this.locationLatLng = new LatLng(
