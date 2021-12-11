@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_dashboard/constants/controllers.dart';
@@ -9,7 +11,7 @@ import 'package:flutter_web_dashboard/widgets/custom_text.dart';
 import 'package:get/get.dart';
 
 class UsersPage extends StatelessWidget {
-   UsersPage({Key key}) : super(key: key);
+  UsersPage({Key key}) : super(key: key);
 
   List<Users> usersList = [];
 
@@ -34,22 +36,28 @@ class UsersPage extends StatelessWidget {
           ),
           Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                      stream: FirestoreDB().mUserstream,
-                      builder: ( BuildContext context,  AsyncSnapshot<QuerySnapshot> snapshot) {
-                        usersList.clear();
-                        if (snapshot.data != null && snapshot.hasData) {
-                          if (snapshot.data.docs.isNotEmpty) {
-                            snapshot.data.docs.forEach((element) {
-                              Users user = Users.fromMapObject(element.data());
+                  stream: FirestoreDB().mUserstream,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    usersList.clear();
+                    if (snapshot.data != null && snapshot.hasData) {
+                      if (snapshot.data.docs.isNotEmpty) {
+                        snapshot.data.docs.forEach((element) {
+                          Users user = Users.fromMapObject(element.data());
 
-                              usersList.add(user);
-                            });
-                          }
-                          return ListView(
-                            children: [UsersTable(users: usersList,)],
-                          );
-                        }else return Container();
-                      })),
+                          usersList.add(user);
+                        });
+                      }
+                      return ListView(
+                        children: [
+                          UsersTable(
+                            users: usersList,
+                          )
+                        ],
+                      );
+                    } else
+                      return Container();
+                  })),
         ],
       ),
     );

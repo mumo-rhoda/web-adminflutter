@@ -1,8 +1,9 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_web_dashboard/models/emegercies.dart';
 import 'package:flutter_web_dashboard/models/users.dart';
 import 'package:flutter_web_dashboard/pages/overview/widgets/info_card.dart';
-
 
 class OverviewCardsMediumScreen extends StatelessWidget {
   List<Emergencies> emergencies;
@@ -11,58 +12,59 @@ class OverviewCardsMediumScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   double _width = MediaQuery.of(context).size.width;
+    double _width = MediaQuery.of(context).size.width;
 
-    return  Column(
+    return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Row(
-                  children: [
-                    InfoCard(
-                      title: "AppUsers",
-                      value: users.length.toString(),
-                      onTap: () {},
-                  topColor: Colors.orange,
-
-                    ),
-                    SizedBox(
-                      width: _width / 64,
-                    ),
-                    InfoCard(
-                      title: "Emergency Reports",
-                      value: emergencies.length.toString(),
-                  topColor: Colors.lightGreen,
-
-                      onTap: () {},
-                    ),
-                  
-                  ],
-                ),
+          children: [
+            InfoCard(
+              title: "AppUsers",
+              value: users.length.toString(),
+              onTap: () {},
+              topColor: Colors.orange,
+            ),
             SizedBox(
-                      height: _width / 64,
-                    ),
-                  Row(
-                  children: [
-             
-                    InfoCard(
-                      title: "Closed Emergencies",
-                      value: emergencies.where((element) => element.ReportStatus == "Closed").toList().length.toString(),
-                  topColor: Colors.redAccent,
-
-                      onTap: () {},
-                    ),
-                    SizedBox(
-                      width: _width / 64,
-                    ),
-                    InfoCard(
-                      title: "Pending Emergencies",
-                      value:  emergencies.where((element) => element.ReportStatus == "Pending").toList().length.toString(),
-
-                      onTap: () {},
-                    ),
-                
-                  ],
-                ),
+              width: _width / 64,
+            ),
+            InfoCard(
+              title: "Emergency Reports",
+              value: emergencies.length.toString(),
+              topColor: Colors.lightGreen,
+              onTap: () {},
+            ),
+          ],
+        ),
+        SizedBox(
+          height: _width / 64,
+        ),
+        Row(
+          children: [
+            InfoCard(
+              title: "Closed Emergencies",
+              value: emergencies
+                  .where((element) => element.ReportStatus == "Closed")
+                  .toList()
+                  .length
+                  .toString(),
+              topColor: Colors.redAccent,
+              onTap: () {},
+            ),
+            SizedBox(
+              width: _width / 64,
+            ),
+            InfoCard(
+              title: "Pending Emergencies",
+              value: emergencies
+                  .where((element) => element.ReportStatus == "Pending")
+                  .toList()
+                  .length
+                  .toString(),
+              onTap: () {},
+            ),
+          ],
+        ),
       ],
     );
   }
