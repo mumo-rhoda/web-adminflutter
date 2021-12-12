@@ -1,7 +1,7 @@
 import 'package:flutter_web_dashboard/models/users.dart';
 
 class Dispatch {
-
+  String teamID;
   String Name;
   String Location;
   String Type;
@@ -10,6 +10,7 @@ class Dispatch {
 
 
   Dispatch({
+  this.teamID,
     this.Name,
     this.Location,
     this.Type,
@@ -17,12 +18,17 @@ class Dispatch {
     this.status,
 
   });
-  
+
+  String get _teamID => teamID;
   String get _Name => Name;
   String get _Location => Location;
   String get _Type => Type;
   String get _Contact => Contact;
   String get _status => status;
+
+  set _teamID(String newteamID){
+    this.teamID = newteamID;
+  }
   
   set _Name(String newName){
     this.Name = newName;
@@ -42,7 +48,7 @@ set _status(String newstatus) {
 }
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
-
+    map['teamID'] = teamID;
     map['Name'] = Name;
     map['Location'] = Location;
     map['Contact'] = Contact;
@@ -51,6 +57,7 @@ set _status(String newstatus) {
     return map;
   }
  Dispatch.fromMapObject(Map<dynamic, dynamic> map) {
+    this.teamID = map['teamID'] ?? '';
     this.Name = map['Name'] ?? '';
     this.Location = map['Location'] ?? '';
     this.Type = map['Type'] ?? '';
