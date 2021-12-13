@@ -10,6 +10,7 @@ import 'package:flutter_web_dashboard/pages/overview/widgets/mapsWidget.dart';
 import 'package:flutter_web_dashboard/services/FirestoreDB.dart';
 import 'package:flutter_web_dashboard/widgets/alertDialog.dart';
 import 'package:flutter_web_dashboard/widgets/custom_text.dart';
+import 'package:intl/intl.dart';
 
 /// Example without datasource
 class LatestEmergencyCases extends StatelessWidget {
@@ -54,6 +55,9 @@ class LatestEmergencyCases extends StatelessWidget {
                 horizontalMargin: 12,
                 minWidth: 600,
                 columns: [
+                  DataColumn(
+                    label: Text('Date-Time'),
+                  ),
                   DataColumn2(
                     label: Text("Victim Name"),
                     size: ColumnSize.L,
@@ -77,6 +81,7 @@ class LatestEmergencyCases extends StatelessWidget {
                       .first;
 
                   return DataRow(cells: [
+                    DataCell(CustomText(text: getDateTime(emergency.dateTime))),
                     DataCell(CustomText(
                         text: "${victim.username} ${victim.fullname}")),
                     DataCell(CustomText(text: emergency.ReportType)),
@@ -104,6 +109,8 @@ class LatestEmergencyCases extends StatelessWidget {
                         ),
                         IconButton(
                           onPressed: () async {
+
+
                             emergency.ReportStatus = "Deleted";
                             await FirestoreDB().updateEmergency(emergency);
                             callAlertDialog("Success!",
@@ -179,3 +186,9 @@ class LatestEmergencyCases extends StatelessWidget {
 }
 
 mixin to {}
+
+String getDateTime(DateTime dateTime){
+  return DateFormat('dd-MM-yyyy HH:mm:ss').format(dateTime);
+}
+
+

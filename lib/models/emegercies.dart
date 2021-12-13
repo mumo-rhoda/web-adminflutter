@@ -79,14 +79,15 @@ class Emergencies {
 
   //Extract a Emergencies object from a Map object
   Emergencies.fromMapObject(Map<dynamic, dynamic> map) {
-    this.EmergencyID = map['ReportID'] ?? '';
+    this.EmergencyID = map['reportID'] ?? '';
     this.VictimID = map['uid'] ?? '';
     this.ReportStatus = map['reportStatus'] ?? '';
     this.ReportType = map['emergencyType'] ?? '';
     this.ReportParty = map['reportParty'] ?? '';
-    this.Description = map['description'] ?? '';
-    this.dateTime =
-        DateTime.fromMillisecondsSinceEpoch(Duration.millisecondsPerDay);
+    this.Description = map['description'] ?? '';print(map['timestamp']);
+    map['timestamp'] != null? this.dateTime =  map['timestamp']:
+    this.dateTime = DateTime.now();
+
 
     this.locationLatLng =
         new LatLng(map['latitude'] ?? 1.6585, map['longitude'] ?? 29.2205);
