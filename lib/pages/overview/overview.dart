@@ -2,6 +2,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_web_dashboard/bloc/SortingBloc.dart';
 import 'package:flutter_web_dashboard/helpers/reponsiveness.dart';
 import 'package:flutter_web_dashboard/constants/controllers.dart';
 import 'package:flutter_web_dashboard/models/emegercies.dart';
@@ -27,89 +29,117 @@ class _OverviewPageState extends State<OverviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: FirestoreDB().mUserstream,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          usersList.clear();
-          if (snapshot.data != null && snapshot.hasData) {
-            if (snapshot.data.docs.isNotEmpty) {
-              snapshot.data.docs.forEach((element) {
-                Users user = Users.fromMapObject(element.data());
+    return BlocBuilder<SortingBloc, String>(
 
-                usersList.add(user);
-              });
-            }
+        builder: (context, sortingValue) {
 
-            return StreamBuilder<QuerySnapshot>(
-                stream: FirestoreDB().mEmergenciesStream,
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  uRequestsList.clear();
-                  if (snapshot.data != null && snapshot.hasData) {
-                    if (snapshot.data.docs.isNotEmpty) {
-                      snapshot.data.docs.forEach((element) {
-                        Emergencies emergency =
-                            Emergencies.fromMapObject(element.data());
+        return StreamBuilder<QuerySnapshot>(
+            stream: FirestoreDB().mUserstream,
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              usersList.clear();
+              if (snapshot.data != null && snapshot.hasData) {
+                if (snapshot.data.docs.isNotEmpty) {
+                  snapshot.data.docs.forEach((element) {
+                    Users user = Users.fromMapObject(element.data());
 
-                        uRequestsList.add(emergency);
-                      });
-                    }
-                    return Container(
-                      child: Column(
-                        children: [
-                          Obx(
-                            () => Row(
-                              children: [
-                                Container(
-                                    margin: EdgeInsets.only(
-                                        top: ResponsiveWidget.isSmallScreen(
-                                                context)
-                                            ? 56
-                                            : 6),
-                                    child: CustomText(
-                                      text: menuController.activeItem.value,
-                                      size: 24,
-                                      weight: FontWeight.bold,
-                                    )),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                              child: ListView(
+                    usersList.add(user);
+                  });
+                }
+
+                return StreamBuilder<QuerySnapshot>(
+                    stream: FirestoreDB().mEmergenciesStream,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      uRequestsList.clear();
+                      if (snapshot.data != null && snapshot.hasData) {
+                        if (snapshot.data.docs.isNotEmpty) {
+                          snapshot.data.docs.forEach((element) {
+                            Emergencies emergency = Emergencies.fromMapObject(element.data());
+
+                            if(checkSortingCondition(emergency, sortingValue) && emergency.ReportStatus != "Deleted"){
+                              uRequestsList.add(emergency);
+                            }
+
+
+                          });
+                        }
+                        return Container(
+                          child: Column(
                             children: [
-                              if (ResponsiveWidget.isLargeScreen(context) ||
-                                  ResponsiveWidget.isMediumScreen(context))
-                                if (ResponsiveWidget.isCustomSize(context))
-                                  OverviewCardsMediumScreen(
-                                    emergencies: uRequestsList,
-                                    users: usersList,
-                                  )
-                                else
-                                  OverviewCardsLargeScreen(
-                                    emergencies: uRequestsList,
-                                    users: usersList,
-                                  )
-                              else
-                                OverviewCardsSmallScreen(
-                                  emergencies: uRequestsList,
-                                  users: usersList,
+                              Obx(
+                                () => Row(
+                                  children: [
+                                    Container(
+                                        margin: EdgeInsets.only(
+                                            top: ResponsiveWidget.isSmallScreen(
+                                                    context)
+                                                ? 56
+                                                : 6),
+                                        child: CustomText(
+                                          text: menuController.activeItem.value,
+                                          size: 24,
+                                          weight: FontWeight.bold,
+                                        )),
+                                  ],
                                 ),
-                              LatestEmergencyCases(
-                                emergencies: uRequestsList,
-                                users: usersList,
                               ),
+                              Expanded(
+                                  child: ListView(
+                                children: [
+                                  if (ResponsiveWidget.isLargeScreen(context) ||
+                                      ResponsiveWidget.isMediumScreen(context))
+                                    if (ResponsiveWidget.isCustomSize(context))
+                                      OverviewCardsMediumScreen(
+                                        emergencies: uRequestsList,
+                                        users: usersList,
+                                      )
+                                    else
+                                      OverviewCardsLargeScreen(
+                                        emergencies: uRequestsList,
+                                        users: usersList,
+                                      )
+                                  else
+                                    OverviewCardsSmallScreen(
+                                      emergencies: uRequestsList,
+                                      users: usersList,
+                                    ),
+                                  LatestEmergencyCases(
+                                    emergencies: uRequestsList,
+                                    users: usersList,
+                                  ),
+                                ],
+                              ))
                             ],
-                          ))
-                        ],
-                      ),
-                    );
-                  } else {
-                    return Container();
-                  }
-                });
-          } else {
-            return Container();
-          }
-        });
+                          ),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    });
+              } else {
+                return Container();
+              }
+            });
+      }
+    );
+  }
+
+  bool checkSortingCondition(Emergencies emergency, String searchCriteria) {
+    DateTime mDateTime = DateTime.now();
+    print ("searchCriteria $searchCriteria");
+
+    switch (searchCriteria){
+      case "All": return true;
+      break;
+      case "Today": return emergency.dateTime.day == mDateTime.day && emergency.dateTime.month == mDateTime.month && emergency.dateTime.year == mDateTime.year;
+      break;
+      case "This Month": return  emergency.dateTime.month == mDateTime.month && emergency.dateTime.year == mDateTime.year;
+      break;
+      case "This year": return emergency.dateTime.year == mDateTime.year;
+      break;
+      default: return true;
+
+    }
+
   }
 }

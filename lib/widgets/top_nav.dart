@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_dashboard/bloc/SortingBloc.dart';
+import 'package:flutter_web_dashboard/bloc/sortingEvents.dart';
 import 'package:flutter_web_dashboard/constants/style.dart';
 import 'package:flutter_web_dashboard/helpers/reponsiveness.dart';
+import 'package:flutter_web_dashboard/widgets/textFormField.dart';
+import 'dropdownWidget.dart';
 
 import 'custom_text.dart';
 
-AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
+AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key, String searchCriteria, SortingBloc _bloc) =>
     AppBar(
       leading: !ResponsiveWidget.isSmallScreen(context)
           ? Row(
@@ -35,6 +39,31 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
                   weight: FontWeight.bold,
                 )),
             Expanded(child: Container()),
+            dropdownButtonFormField(
+                listItems: ["All", "Today", "This Month", "This Year"],
+                currentSelection: searchCriteria,
+                defaultSelection: "All",
+                onChangedSelectionFunction: (value){
+
+
+
+
+
+
+                  switch (value){
+                    case "All": _bloc.add(SortingEvent.SortAll);
+                    break;
+                    case "Today": _bloc.add(SortingEvent.SortToday);
+                    break;
+                    case "This Month": _bloc.add(SortingEvent.SortThisMonth);
+                    break;
+                    case "This Year": _bloc.add(SortingEvent.SortThisYear);
+                    break;
+
+                  }
+
+                }),
+
             IconButton(
                 icon: Icon(
                   Icons.settings,
