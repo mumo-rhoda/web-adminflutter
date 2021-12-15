@@ -8,10 +8,19 @@ import 'package:flutter_web_dashboard/services/FirestoreDB.dart';
 import 'package:flutter_web_dashboard/widgets/custom_text.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
-class DispatchTeam extends StatelessWidget {
-  DispatchTeam({Key key});
+class DispatchTeam extends StatefulWidget {
+  DispatchTeam({Key key}): super(key: key);
 
+  @override
+  State<DispatchTeam> createState() => _DispatchTeamState();
+}
+class _DispatchTeamState extends State<DispatchTeam>{
   List<Dispatch> dispatchList = [];
+
+  @override
+  void initState(){
+    super.initState();
+  }
 
 
 
@@ -49,18 +58,37 @@ class DispatchTeam extends StatelessWidget {
                        });
 
                   }
+                      return StreamBuilder<QuerySnapshot>(
+                      stream: FirestoreDB().mDispatchstream,
+                      builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                        dispatchList.clear();
+                        if (snapshot.data != null && snapshot.hasData) {
+                          if (snapshot.data.docs.isNotEmpty) {
+                            snapshot.data.docs.forEach((element) {
+                              Dispatch dispatch = Dispatch
+                                  .fromMapObject(element.data());
 
-                  return ListView(
-                    children: [
-                      DispatchTable(
-                       dispatch: dispatchList,
-                    )
-                  ],
-                  );
-                    } else
-                      return Container();
-                  } )),
-        ],
+                              if (dispatch.status != "Deleted") {
+                                dispatchList.add(dispatch);
+                              }
+                            });
+                          }
+
+
+                          return ListView(
+                            children: [
+                              DispatchTable(
+                                dispatch: dispatchList,
+                              )
+                            ],
+                          );
+                        } else
+                          return Container();
+                      });
+                  } else
+                    return Container();
+                } )),],
       ),
     );
   }

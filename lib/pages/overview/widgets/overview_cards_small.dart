@@ -20,7 +20,11 @@ class OverviewCardsSmallScreen extends StatelessWidget {
         children: [
           InfoCardSmall(
             title: "AppUsers",
-            value: users.length.toString(),
+            value: users
+                .where((element) => element.userType != "Deleted")
+                .toList()
+                .length
+                .toString(),
             onTap: () {},
             isActive: true,
           ),

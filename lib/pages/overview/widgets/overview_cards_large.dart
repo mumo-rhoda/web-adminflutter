@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_dashboard/models/emegercies.dart';
 import 'package:flutter_web_dashboard/models/users.dart';
+import 'package:flutter_web_dashboard/pages/Emergencies/emergencies.dart';
 import 'package:flutter_web_dashboard/pages/overview/widgets/info_card.dart';
+import 'package:flutter_web_dashboard/pages/users/users.dart';
+import 'package:flutter_web_dashboard/pages/users/widgets/users_table.dart';
 
 class OverviewCardsLargeScreen extends StatelessWidget {
   List<Emergencies> emergencies;
@@ -18,8 +21,15 @@ class OverviewCardsLargeScreen extends StatelessWidget {
       children: [
         InfoCard(
           title: "App Users",
-          value: users.length.toString(),
-          onTap: () {},
+          value: users
+              .where((element) => element.userType != "Deleted")
+              .toList()
+              .length
+              .toString(),
+          onTap: () {Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => UsersPage(),)
+          );},
           topColor: Colors.orange,
         ),
         SizedBox(
@@ -29,7 +39,10 @@ class OverviewCardsLargeScreen extends StatelessWidget {
           title: "Emergency_Reports",
           value: emergencies.length.toString(),
           topColor: Colors.lightGreen,
-          onTap: () {},
+          onTap: () {Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EmergenciesPage(),)
+          );},
         ),
         SizedBox(
           width: _width / 64,

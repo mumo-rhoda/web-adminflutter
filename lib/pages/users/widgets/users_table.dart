@@ -7,6 +7,7 @@ import 'package:flutter_web_dashboard/constants/style.dart';
 import 'package:flutter_web_dashboard/models/users.dart';
 import 'package:flutter_web_dashboard/pages/users/widgets/updateUsers.dart';
 import 'package:flutter_web_dashboard/services/FirestoreDB.dart';
+import 'package:flutter_web_dashboard/widgets/alertDialog.dart';
 import 'package:flutter_web_dashboard/widgets/custom_text.dart';
 
 import 'addUsers.dart';
@@ -65,20 +66,26 @@ class UsersTable extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                    onPressed: ()  {
-                       Navigator.push(
-                                 context,
-                        MaterialPageRoute(
-                                  builder: (context) => UpdateUsersPage(),
-                          )
-                             );
+                      onPressed: () =>
+                      {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddUsers(),
+                          ),
+                        )
                       },
                       hoverColor: Colors.grey,
                       icon: Icon(Icons.edit),
                       color: Colors.blue,
                     ),
                     IconButton(
-                      onPressed: ()async {},
+                        onPressed: () async {
+                          user.userType = "Deleted";
+                          await FirestoreDB().updateUser(user);
+                          callsAlertDialog( context);
+                        },
+
                       hoverColor: Colors.grey,
                       icon: Icon(Icons.delete),
                       color: Colors.red,
@@ -103,5 +110,30 @@ class UsersTable extends StatelessWidget {
             }).toList()),
       );
     });
+  }
+
+  void callsAlertDialog(BuildContext context) {
+
+    showDialog(
+        context: context,
+        builder: (context){
+
+          return Container(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 500.0),
+              child: Container(
+                  width: 80,
+                  child: AlertDialogWidget(
+                      context: context,
+                      title: "Success",
+                      primaryButtonText: "OK",
+                      description: "User Deleted successfully!", icon: 'person',)),
+            ),
+
+          );
+
+
+        }
+    );
   }
 }

@@ -30,7 +30,7 @@ class LatestEmergencyCases extends StatelessWidget {
               color: lightGrey.withOpacity(.1),
               blurRadius: 12)
         ],
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(4),
       ),
       padding: const EdgeInsets.all(16),
       margin: EdgeInsets.only(bottom: 30),
@@ -51,8 +51,8 @@ class LatestEmergencyCases extends StatelessWidget {
           ),
           Container(
             child: DataTable2(
-                columnSpacing: 12,
-                horizontalMargin: 12,
+                columnSpacing: 2,
+                horizontalMargin: 2,
                 minWidth: 600,
                 columns: [
                   DataColumn(

@@ -84,8 +84,8 @@ class Emergencies {
     this.ReportStatus = map['reportStatus'] ?? '';
     this.ReportType = map['emergencyType'] ?? '';
     this.ReportParty = map['reportParty'] ?? '';
-    this.Description = map['description'] ?? '';print(map['timestamp']);
-    map['timestamp'] != null? this.dateTime =  map['timestamp']:
+    this.Description = map['description'] ?? '';
+    map['timestamp'] != null? this.dateTime =  (map['timestamp'] as Timestamp).toDate():
     this.dateTime = DateTime.now();
 
 

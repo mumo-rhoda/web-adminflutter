@@ -10,10 +10,21 @@ import 'package:flutter_web_dashboard/services/FirestoreDB.dart';
 import 'package:flutter_web_dashboard/widgets/custom_text.dart';
 import 'package:get/get.dart';
 
-class UsersPage extends StatelessWidget {
+class UsersPage extends StatefulWidget {
   UsersPage({Key key}) : super(key: key);
 
+  @override
+  State<UsersPage> createState() => _UsersPageState();
+}
+
+class _UsersPageState extends State<UsersPage>{
+
   List<Users> usersList = [];
+
+  @override
+  void initState(){
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +32,21 @@ class UsersPage extends StatelessWidget {
       child: Column(
         children: [
           Obx(
-            () => Row(
-              children: [
-                Container(
-                    margin: EdgeInsets.only(
-                        top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
-                    child: CustomText(
-                      text: menuController.activeItem.value,
-                      size: 24,
-                      weight: FontWeight.bold,
-                    )),
-              ],
-            ),
+                () =>
+                Row(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(
+                            top: ResponsiveWidget.isSmallScreen(context)
+                                ? 56
+                                : 6),
+                        child: CustomText(
+                          text: menuController.activeItem.value,
+                          size: 24,
+                          weight: FontWeight.bold,
+                        )),
+                  ],
+                ),
           ),
           Expanded(
               child: StreamBuilder<QuerySnapshot>(
@@ -48,13 +62,34 @@ class UsersPage extends StatelessWidget {
                           usersList.add(user);
                         });
                       }
-                      return ListView(
-                        children: [
-                          UsersTable(
-                            users: usersList,
-                          )
-                        ],
-                      );
+                      return StreamBuilder<QuerySnapshot>(
+                          stream: FirestoreDB().mUserstream,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            usersList.clear();
+                            if (snapshot.data != null && snapshot.hasData) {
+                              if (snapshot.data.docs.isNotEmpty) {
+                                snapshot.data.docs.forEach((element) {
+                                  Users user = Users
+                                      .fromMapObject(element.data());
+
+                                  if (user.userType != "Deleted") {
+                                    usersList.add(user);
+                                  }
+                                });
+                              }
+
+
+                              return ListView(
+                                children: [
+                                  UsersTable(
+                                    users: usersList,
+                                  )
+                                ],
+                              );
+                            } else
+                              return Container();
+                          });
                     } else
                       return Container();
                   })),
@@ -62,4 +97,9 @@ class UsersPage extends StatelessWidget {
       ),
     );
   }
+
+
+
+
+
 }

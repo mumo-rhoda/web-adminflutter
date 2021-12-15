@@ -5,10 +5,17 @@ import 'package:flutter_web_dashboard/widgets/custom_text.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
+
+
+
 class AuthenticationPage extends StatelessWidget {
-  const AuthenticationPage({Key key}) : super(key: key);
+
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Center(
         child: Container(
@@ -61,7 +68,6 @@ class AuthenticationPage extends StatelessWidget {
                 height: 15,
               ),
               TextField(
-                obscureText: true,
                 decoration: InputDecoration(
                     labelText: "Password",
                     hintText: "123",
@@ -83,7 +89,7 @@ class AuthenticationPage extends StatelessWidget {
                     ],
                   ),
                   CustomText(text: "Forgot password?", color: active)
-                ],
+                  ],
               ),
               SizedBox(
                 height: 15,

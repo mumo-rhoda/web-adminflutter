@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_dashboard/constants/style.dart';
 import 'package:flutter_web_dashboard/models/dispatch.dart';
+import 'package:flutter_web_dashboard/pages/Emergencies/widgets/emergencies_table.dart';
 import 'package:flutter_web_dashboard/pages/dispatchTeam/widgets/updateDispatchTeam.dart';
+import 'package:flutter_web_dashboard/services/FirestoreDB.dart';
+import 'package:flutter_web_dashboard/widgets/alertDialog.dart';
 import 'package:flutter_web_dashboard/widgets/custom_text.dart';
 
 import 'addDispatchTeam.dart';
@@ -65,21 +68,26 @@ class DispatchTable extends StatelessWidget{
               DataCell(Row(
                    mainAxisSize: MainAxisSize.min,
                     children: [
-                       IconButton(
-                             onPressed: ()  {
-                               Navigator.push(
-                                 context,
-                                 MaterialPageRoute(
-                                   builder: (context) => UpdateDispatchTeamPage(),
-                                 )
-                               );
-                             },
+                       IconButton(onPressed: ()  {
+                         Navigator.push(
+                             context,
+                             MaterialPageRoute(
+                               builder: (context) => AddDispatchTeamPage(),
+                             )
+                         );
+                       },
                               hoverColor: Colors.grey,
                             icon: Icon(Icons.edit),
                                color: Colors.blue,
                                  ),
                          IconButton(
-                            onPressed: () async {},
+                           onPressed: () async {
+
+
+                              dispatch.status = "Deleted";
+                              await FirestoreDB().updateDispatchTeam(dispatch);
+                              callsAlertDialog( context);
+              },
                             hoverColor: Colors.grey,
                               icon: Icon(Icons.delete),
                              color: Colors.red,
@@ -104,4 +112,31 @@ class DispatchTable extends StatelessWidget{
       );
     });
   }
-}
+
+  void callsAlertDialog(BuildContext context) {
+
+      showDialog(
+          context: context,
+          builder: (context){
+
+            return Container(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 500.0),
+                child: Container(
+                    width: 80,
+                    child: AlertDialogWidget(
+                        context: context,
+                        title: "Success",
+                        primaryButtonText: "OK",
+                        description: "Team Deleted successfully!", icon: 'Alert',)),
+              ),
+
+            );
+
+
+          }
+      );
+
+
+    }
+  }

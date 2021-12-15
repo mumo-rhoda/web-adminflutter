@@ -40,31 +40,29 @@ class _EmergenciesPageState extends State<EmergenciesPage> {
     // TODO: implement initState
     super.initState();
     getDispatchTeams();
-
-
   }
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return Container(
       child: Column(
         children: [
           Obx(
-            () => Row(
-              children: [
-                Container(
-                    margin: EdgeInsets.only(
-                        top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
-                    child: CustomText(
-                      text: menuController.activeItem.value,
-                      size: 24,
-                      weight: FontWeight.bold,
-                    )),
-              ],
-            ),
+                () =>
+                Row(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(
+                            top: ResponsiveWidget.isSmallScreen(context)
+                                ? 56
+                                : 6),
+                        child: CustomText(
+                          text: menuController.activeItem.value,
+                          size: 24,
+                          weight: FontWeight.bold,
+                        )),
+                  ],
+                ),
           ),
           Expanded(
               child: StreamBuilder<QuerySnapshot>(
@@ -89,27 +87,41 @@ class _EmergenciesPageState extends State<EmergenciesPage> {
                             if (snapshot.data != null && snapshot.hasData) {
                               if (snapshot.data.docs.isNotEmpty) {
                                 snapshot.data.docs.forEach((element) {
-                                  Emergencies emergency = Emergencies.fromMapObject(element.data());
+                                  Emergencies emergency = Emergencies
+                                      .fromMapObject(element.data());
 
-                                  if(emergency.ReportStatus != "Deleted"){
+                                  if (emergency.ReportStatus != "Deleted") {
                                     uRequestsList.add(emergency);
                                   }
-
                                 });
                               }
 
-                              if(searchValue != null  && searchValue != ""){
+                              if (searchValue != null && searchValue != "") {
+                                filteredEmergencies = uRequestsList.where((
+                                    emergency) =>
 
-
-                                filteredEmergencies = uRequestsList.where((emergency) =>
-
-                                usersList.where((victim) => victim.fullname.toLowerCase().contains(searchValue.toLowerCase()) && victim.uid == emergency.VictimID ).toList().isNotEmpty
-                                    || usersList.where((victim) => victim.username.toLowerCase().contains(searchValue.toLowerCase()) && victim.uid == emergency.VictimID ).toList().isNotEmpty
-                            || DateFormat.MMMM().format(emergency.dateTime).toLowerCase().contains(searchValue.toLowerCase())
+                                usersList
+                                    .where((victim) =>
+                                victim.fullname.toLowerCase().contains(
+                                    searchValue.toLowerCase()) &&
+                                    victim.uid == emergency.VictimID)
+                                    .toList()
+                                    .isNotEmpty
+                                    || usersList
+                                    .where((victim) =>
+                                victim.username.toLowerCase().contains(
+                                    searchValue.toLowerCase()) &&
+                                    victim.uid == emergency.VictimID)
+                                    .toList()
+                                    .isNotEmpty
+                                    ||
+                                    DateFormat.MMMM().format(emergency.dateTime)
+                                        .toLowerCase()
+                                        .contains(searchValue.toLowerCase())
 
 
                                 ).toList();
-                              }else{
+                              } else {
                                 filteredEmergencies = uRequestsList;
                               }
                               return ListView(
@@ -124,51 +136,51 @@ class _EmergenciesPageState extends State<EmergenciesPage> {
                                           child: textField(
                                               context,
                                               controller: searchController,
-                                              onChangedFunction: (){
+                                              onChangedFunction: () {
                                                 setState(() {
-                                                  searchValue = searchController.text;
-
-
-
-
+                                                  searchValue =
+                                                      searchController.text;
                                                 });
-
                                               },
-                                              onTapFunction: (){},
+                                              onTapFunction: () {},
                                               hintText: "Search by Name or Date",
                                               labelText: "Search by Name or Date",
                                               errorMessage: ""),
                                         ),
 
                                         Padding(
-                                          padding: const EdgeInsets.only(right: 12.0),
+                                          padding: const EdgeInsets.only(
+                                              right: 12.0),
                                           child: IconButton(
                                             icon: Icon(
                                               Icons.search,
                                               size: 30,
                                               color: Colors.red,
                                             ),
-                                            onPressed: (){
+                                            onPressed: () {
                                               //executed when user presses back button
                                               setState(() {
-                                                searchValue = searchController.text;
+                                                searchValue =
+                                                    searchController.text;
                                                 print("searchController");
                                               });
                                             },
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 60.0, top: 4, right: 12),
+                                          padding: const EdgeInsets.only(
+                                              left: 60.0, top: 4, right: 12),
                                           child: InkWell(
-                                            onTap: (){
-
-                                              createPDF(filteredEmergencies, usersList, dispatchList);
-
+                                            onTap: () {
+                                              createPDF(filteredEmergencies,
+                                                  usersList, dispatchList);
                                             },
                                             child: Column(
                                               mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .center,
+                                              crossAxisAlignment: CrossAxisAlignment
+                                                  .center,
                                               children: [
                                                 Text("Generate Report"),
                                                 Icon(
@@ -198,6 +210,7 @@ class _EmergenciesPageState extends State<EmergenciesPage> {
       ),
     );
   }
+
 
 
   void getDispatchTeams() {

@@ -49,13 +49,13 @@ class Emergenciestable extends StatelessWidget {
                     color: lightGrey.withOpacity(.1),
                     blurRadius: 12)
               ],
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(4),
             ),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(2),
             margin: EdgeInsets.only(bottom: 30),
             child: DataTable2(
-                columnSpacing: 12,
-                horizontalMargin: 12,
+                columnSpacing: 2,
+                horizontalMargin: 2,
                 minWidth: 600,
                 columns: [
                   DataColumn(
@@ -72,6 +72,9 @@ class Emergenciestable extends StatelessWidget {
                     label: Text('Description'),
                   ),
                   DataColumn(
+                    label: Text('status'),
+                  ),
+                  DataColumn(
                     label: Text('Action'),
                   ),
                 ],
@@ -86,6 +89,7 @@ class Emergenciestable extends StatelessWidget {
                         CustomText(text: "${victim.username} ${victim.fullname}")),
                     DataCell(CustomText(text: emergency.ReportType)),
                     DataCell(CustomText(text: emergency.Description)),
+                    DataCell(CustomText(text: emergency.ReportStatus)),
                     DataCell(Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -105,30 +109,26 @@ class Emergenciestable extends StatelessWidget {
                             ],
                           ),
                         ),
-                        IconButton(
-                          onPressed: () async {
+                        IconButton( onPressed: () async {
 
-                            emergency.ReportStatus = "Deleted";
-                            await FirestoreDB().updateEmergency(emergency);
-                            callAlertDialog(context);
-                          },
+
+                          emergency.ReportStatus = "Deleted";
+                          await FirestoreDB().updateEmergency(emergency);
+                          callAlertDialog( context);
+                        },
                           hoverColor: Colors.grey,
                           icon: Icon(Icons.delete),
                           color: Colors.red,
                         ),
                         IconButton(
-                          onPressed: () async {
-                            //set emergency's status to closed
-                            //emergency.ReportStatus = "Closed";
-                            //await FirestoreDB().updateEmergency(emergency);
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => UpdateEmergencies(),
-                                  )
-                              );
-                            },
+                          onPressed: () async {
+                            //set emergency status to closed;
+                            emergency.ReportStatus = "Closed";
+                            await FirestoreDB().updateEmergency(emergency);
+
+                            call2AlertDialog( context);
+                          },
                             //callAlertDialog();
 
                           hoverColor: Colors.grey,
@@ -158,6 +158,31 @@ class Emergenciestable extends StatelessWidget {
             child: MapsWidget(emergency: emergency, user: user),
           );
         });
+  }
+
+  void call2AlertDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context){
+
+          return Container(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 500.0),
+              child: Container(
+                  width: 80,
+                  child: AlertDialogWidget(
+                      context: context,
+                      title: "Success",
+                      primaryButtonText: "OK",
+                      description: "EmergencyStatus updated successfully!")),
+            ),
+
+          );
+
+
+        }
+    );
+
   }
 }
 bool checkSortingCondition(Emergencies emergency, String searchCriteria) {
